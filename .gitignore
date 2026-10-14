@@ -1,0 +1,17 @@
+.venv/
+.venv-py311/
+.vscode/
+.DS_Store
+.ipynb_checkpoints/
+__pycache__/
+backups/
+datamart/
+
+Dockerfile_A1_backup
+docker-compose_A1_backup.yaml
+requirements_A1_backup.txt
+
+Assignment_1_Presentation.pdf
+assignment1_EDA & Checks.ipynbdata_processing_main.ipynb
+/data_processing_main.ipynb
+/assignment1_EDA & Checks.ipynb
