@@ -6,6 +6,7 @@ from pyspark.sql import SparkSession
 import utils.data_processing_silver_features as silver_features
 from utils.data_processing_silver_table import process_silver_table
 
+import argparse
 
 # ========================================================
 # DATE HELPER
@@ -54,6 +55,17 @@ if __name__ == "__main__":
 
     print("\n=== SILVER PIPELINE START ===")
 
+    parser = argparse.ArgumentParser()
+
+    parser.add_argument(
+        "--snapshotdate",
+        type=str,
+        default=None,
+        help="Optional monthly snapshot date: YYYY-MM-01"
+    )
+
+    args = parser.parse_args()
+    
     spark = (
         SparkSession.builder
         .appName("assignment2_silver")
@@ -82,6 +94,40 @@ if __name__ == "__main__":
         "2025-11-01"
     )
 
+    # Historical backfill: process only the requested month.
+    # Without this argument, preserve the original full pipeline.
+
+    if args.snapshotdate:
+
+        snapshot = datetime.strptime(
+            args.snapshotdate,
+            "%Y-%m-%d"
+        )
+
+        if snapshot.day != 1:
+            raise ValueError(
+                "Snapshot date must be the first of a month."
+            )
+
+        # Range shared by all four source datasets.
+        if not (
+            "2023-01-01"
+            <= args.snapshotdate
+            <= "2024-12-01"
+        ):
+            raise ValueError(
+                "Snapshot date outside the supported backfill range."
+            )
+
+        feature_snapshot_dates = [args.snapshotdate]
+        clickstream_snapshot_dates = [args.snapshotdate]
+        lms_snapshot_dates = [args.snapshotdate]
+
+        print(
+            "Backfill snapshot:",
+            args.snapshotdate
+        )
+        
     # ----------------------------------------------------
     # Directories
     # ----------------------------------------------------
