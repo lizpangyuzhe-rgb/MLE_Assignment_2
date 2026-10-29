@@ -1,7 +1,7 @@
 {
     "model_name": "xgboost_default_risk",
     "model_type": "XGBClassifier",
-    "trained_at_utc": "2026-10-14T08:00:58.848338+00:00",
+    "trained_at_utc": "2026-10-15T05:30:48.503993+00:00",
     "decision_threshold": 0.45,
     "training_period": "before 2024-07-01",
     "oot_period": "2024-07-01 onwards",
